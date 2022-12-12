@@ -1,6 +1,9 @@
 
 import openai
 
+import requests
+import sounddevice as sd
+from scipy.io.wavfile import write
 
 
 
@@ -179,7 +182,6 @@ class Dall_E_Edit:
     def __init__(self) -> None:
         key_path = str("key.txt")
         openai.api_key_path=key_path
-
     
     def image_edit(self, image_path, masked_image_path, prompt):
         
@@ -236,13 +238,38 @@ inputs = {
     "url": "https://www.google.com/search?q=" + question.replace(" ", "+")
 }"""
 
+class Whisper():
+    """
+    Class responsable for generating messages and emails, connecting to the GPT-3 api
+    Input: prompt = input for writing the message
+    """
+    def __init__(self) -> None:
+        pass 
+
+    def rec(num_seconds): # Duration of recording
+        fs = 44100  # Sample rate 
+        myrecording = sd.rec(int(num_seconds * fs), samplerate=fs, channels=2)
+        sd.wait()
+        write('sound.wav', fs, myrecording)  
+
+        url = "https://whisper.lablab.ai/asr"
+        payload={}
+        files=[
+        ('audio_file',('sound.wav',open('sound.wav','rb'),'audio/mpeg'))
+        ]
+        response = requests.request("POST", url, data=payload, files=files).json()
+        output = response['text']
+
+        return output
+
+
 
 def main():
     classifier = GPT3_Classifier()
     prompt_handler = GPT3_Prompt_Handler()
     
-    
-    user_input = """Generate an image about a broccoli eating caviar!"""
+    user_input = Whisper.rec(5)
+    #user_input = """Generate an image about a cat on a sofa"""
 
 
     action = classifier.classify(user_input)
