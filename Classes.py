@@ -6,7 +6,11 @@ import openai
 
 
 ### Classes to build:
-# 
+# Handlers to call the other API 
+#  - Whisper (free API key should be available by lablab)
+#  - Dall-E / Stable Diffusion 
+#  - OCR 
+#  - YOLO (image detection)
 class GPT3_Convo():
 
     def __init__(self) -> None:
@@ -106,9 +110,9 @@ class GPT3_Prompt_Handler:
         frequency_penalty=0,
         presence_penalty=0
         )
-        print(response)
+        
         output = str(response['choices'][0]).split('text": ')[1].replace(r'\n\n', '').replace(r'\n', '')
-        print(output)
+        
 
         return output
 
