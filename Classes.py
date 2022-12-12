@@ -74,7 +74,7 @@ class GPT3_Classifier:
 
     def classify(self, prompt):
         prompt = """Classify the next sentence in of these 4 labels: [generate image], [factcheck], [write code], [write message]:
-        """ + prompt
+        """ + prompt #prompts - santosh 
         
         response = openai.Completion.create(
         model=self.model,
@@ -99,7 +99,7 @@ class GPT3_Prompt_Handler:
 
     def handle_prompt(self, prompt_action, prompt):
         prompt = """Rewrite the follow input as a """ + prompt_action + """ prompt:
-        """ + prompt
+        """ + prompt #prompts - santosh 
         
         response = openai.Completion.create(
         model=self.model,
@@ -132,7 +132,7 @@ class Codex_Gen:
     def codex_gen(self, prompt):
 
         response = openai.Completion.create(
-        model="code-davinci-002",
+        model=self.model,
         prompt=prompt,
         temperature=0,
         max_tokens=256,
@@ -143,7 +143,7 @@ class Codex_Gen:
 
         return response
 
-
+# class stable diffusion - santosh 
 class Dall_E_Gen: 
     """
     Class responsable for generating images, connecting to the Dall-E2 api
@@ -166,6 +166,7 @@ class Dall_E_Gen:
 
 
 
+# class stable diffusion -santosh 
 class Dall_E_Edit: 
     """
     Class responsable for editing pictures, connecting to the Dall-E2 api
@@ -241,7 +242,7 @@ def main():
     prompt_handler = GPT3_Prompt_Handler()
     
     
-    user_input = """Generate an image of a mantis celebrating his first kill."""
+    user_input = """Generate an image about a broccoli eating caviar!"""
 
 
     action = classifier.classify(user_input)
