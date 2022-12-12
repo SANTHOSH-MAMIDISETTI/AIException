@@ -16,7 +16,8 @@ import openai
 ### Classes to build:
 #  - Handlers to call the other API 
 #  - Whisper (free API key should be available by lablab)
-#  - Dall-E / Stable Diffusion 
+#  - Dall-E / Stable Diffusion (done)
+#  - Codex (done)
 #  - OCR 
 #  - YOLO (image detection)
 
@@ -119,6 +120,10 @@ class GPT3_Prompt_Handler:
 
 
 class Codex_Gen: 
+    """
+    Class responsable for generating code, connecting to the Codex api
+    Input: prompt (programming language explicitly needed)
+    """
     def __init__(self) -> None:
         key_path = str("key.txt")
         openai.api_key_path=key_path
@@ -140,6 +145,10 @@ class Codex_Gen:
 
 
 class Dall_E_Gen: 
+    """
+    Class responsable for generating images, connecting to the Dall-E2 api
+    Input: prompt (the more detailed the better)
+    """
     def __init__(self) -> None:
         key_path = str("key.txt")
         openai.api_key_path=key_path
@@ -156,7 +165,40 @@ class Dall_E_Gen:
         return image_url
 
 
+
+class Dall_E_Edit: 
+    """
+    Class responsable for editing pictures, connecting to the Dall-E2 api
+    Input: 
+        image_path = string containing the path of the whole image to edit
+        masked_image_path = string containing the path of the image having a mask on 
+        prompt = description of the full new image, not just the erased/masked area
+        https://beta.openai.com/docs/guides/images/usage
+    """
+    def __init__(self) -> None:
+        key_path = str("key.txt")
+        openai.api_key_path=key_path
+
+    
+    def image_edit(self, image_path, masked_image_path, prompt):
+        
+        response = openai.Image.create_edit(
+        image=open(image_path, "rb"),
+        mask=open(masked_image_path, "rb"),
+        prompt=prompt,
+        n=1,
+        size="1024x1024"
+        )
+        image_url = response['data'][0]['url']
+
+        return image_url
+
+
 class GPT3_Message_Gen: 
+    """
+    Class responsable for generating messages and emails, connecting to the GPT-3 api
+    Input: prompt = input for writing the message
+    """
     def __init__(self) -> None:
         key_path = str("key.txt")
         openai.api_key_path=key_path
@@ -232,6 +274,7 @@ def main():
 
 if __name__=='__main__':
     main()
+
 
 
 
