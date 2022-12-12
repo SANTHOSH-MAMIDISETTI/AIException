@@ -1,9 +1,14 @@
 
+from tempfile import TemporaryFile
 import openai
 
 import requests
 import sounddevice as sd
 from scipy.io.wavfile import write
+from gtts import gTTS
+from io import BytesIO
+import playsound
+
 
 
 
@@ -215,7 +220,7 @@ class GPT3_Message_Gen:
         model=self.model,
         prompt=prompt,
         temperature=0.3, 
-        max_tokens=150,
+        max_tokens=500,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0
@@ -248,7 +253,7 @@ class Whisper():
 
     def rec(num_seconds): # Duration of recording
         fs = 44100  # Sample rate 
-        myrecording = sd.rec(int(num_seconds * fs), samplerate=fs, channels=2)
+        myrecording = sd.rec(int(num_seconds * fs), samplerate=fs, channels=1)
         sd.wait()
         write('sound.wav', fs, myrecording)  
 
@@ -263,36 +268,53 @@ class Whisper():
         return output
 
 
+def text_to_speech(text, lang = 'en'):
+    tts = gTTS(text, lang = lang)  
+    tts.save('temp.mp3')
+    playsound.playsound('temp.mp3')
+
+
 
 def main():
+    language = 'en'
     classifier = GPT3_Classifier()
     prompt_handler = GPT3_Prompt_Handler()
     
-    user_input = Whisper.rec(5)
-    #user_input = """Generate an image about a cat on a sofa"""
-
+    #user_input = Whisper.rec(5)
+    
+    user_input = """Write a mail to my boss explaining I like his daughter"""
+    print(user_input)
 
     action = classifier.classify(user_input)
     print(action) # classification output 
-    prompt_cleaned = prompt_handler.handle_prompt(user_input, action)
+    
 
     if "Write Message" in action:
         message_gen = GPT3_Message_Gen()
-        message = message_gen.message_gen(prompt_cleaned)
+        prompt_cleansed = prompt_handler.handle_prompt("""GPT3""", user_input,)
+        message = message_gen.message_gen(prompt_cleansed)
+        print('message')
         print(message)
+        output_spoken = message
+        
 
     elif "Write Code" in action:
         code_gen = Codex_Gen()
-        code = code_gen.codex_gen(prompt_cleaned)
+        prompt_cleansed = prompt_handler.handle_prompt("""Codex""", user_input,)
+        code = code_gen.codex_gen(prompt_cleansed)
         print(code)
+
 
     elif "Generate Image" in action:
         im_gen = Dall_E_Gen()
-        im_url = im_gen.image_gen(prompt_cleaned)
+        prompt_cleansed = prompt_handler.handle_prompt("""Dall_E""", user_input,)
+        im_url = im_gen.image_gen(prompt_cleansed)
         print(im_url)
 
-    
-    
+   
+    if output_spoken:
+        text_to_speech(output_spoken)
+        
 
     #convo_bot = GPT3_Convo()
     # # This crashes because of some string parsing error, I assume
