@@ -29,7 +29,7 @@ def text_to_img_stable_diffusion(prompt):
                 img.save(str(artifact.seed)+ ".png") 
                 print("Image saved as " + str(artifact.seed) + ".png")
                 print("this is func 1")
-
+    return img
 # new_prompt = input("Enter the text you want to edit the previous image for: ")
 
 def editing_previous_img (img,new_prompt):
@@ -71,6 +71,7 @@ def editing_previous_img (img,new_prompt):
 
 
 prompt = input("Enter the text you want to generate an image for: ")
-text_to_img_stable_diffusion(prompt)
+imgs = text_to_img_stable_diffusion(prompt)
 new_prompt = input("Enter the text you want to edit the previous image for: ")
-editing_previous_img(new_prompt) 
+# editing_previous_img("img.png",new_prompt)
+editing_previous_img(imgs,new_prompt)
