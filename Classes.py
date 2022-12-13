@@ -1,4 +1,3 @@
-
 from tempfile import TemporaryFile
 import openai
 
@@ -268,6 +267,27 @@ class Whisper():
         return output
 
 
+class Dataset_Handler:
+    """
+    Class responsable for extracting the url of the wanted item, connecting to our internal database.
+    Inputs:
+        __init__: dataset = pandas_dataset type database of our furniture
+        find_url: params = list containing [label, style, material] wanted 
+    """
+    def __init__(self, dataset) -> None:
+        self.data = dataset 
+
+    def find_url(self, params): 
+        label, style, material = params
+        temp_data = self.data[self.data['label'] == label]
+        temp_data = temp_data[temp_data['style'] == style]
+        temp_data = temp_data[temp_data['material'] == material]
+        url = list(temp_data['url'])[0]
+
+        return url
+
+
+
 def text_to_speech(text, lang = 'en'):
     tts = gTTS(text, lang = lang)  
     tts.save('temp.mp3')
@@ -283,8 +303,7 @@ def main():
     #user_input = Whisper.rec(5)
     
     user_input = """Write a mail to my boss explaining I like his daughter"""
-    print(user_input)
-
+    
     action = classifier.classify(user_input)
     print(action) # classification output 
     
@@ -316,17 +335,7 @@ def main():
         text_to_speech(output_spoken)
         
 
-    #convo_bot = GPT3_Convo()
-    # # This crashes because of some string parsing error, I assume
-    #convo_bot.prompt_conversation("""Hey Exception, how are you? """)
-
 
 
 if __name__=='__main__':
     main()
-
-
-
-
-
-
