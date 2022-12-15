@@ -23,7 +23,6 @@ seaborn==0.12.1
 setuptools==58.0.4
 sounddevice==0.4.5
 stability_sdk==0.3.0
-tensorflow==2.11.0
 tflite_runtime==2.11.0
 thop==0.1.1.post2209072238
 torch==1.13.0

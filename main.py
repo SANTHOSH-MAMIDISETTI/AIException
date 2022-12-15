@@ -9,6 +9,7 @@ import glob
 from PIL import Image
 
 
+
 my_config = Config(
     region_name = 'us-west-2',
     signature_version = 'v4',
