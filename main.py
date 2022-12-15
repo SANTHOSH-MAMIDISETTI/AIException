@@ -62,7 +62,7 @@ def main():
     else:
         pic, filename = img_generator.txt_to_image(prompt)
     
-    upload_file(filename, object_name= unique_id+'generated.jpg')
+    
     
 
     ### WAIT FOR API:
@@ -73,23 +73,26 @@ def main():
         edit_pic, filename = img_generator.edit_image(pic, prompt)
 
         # Now we are overwriting filename to make it work with YOLO
-        
+        upload_file(filename, object_name= unique_id+'/generated.jpg')
         
 
     else:
+        upload_file(filename, object_name= unique_id+'/generated.jpg')
         pred, image, img_file = yolo.run(source = filename)
 
         # Get the files that have the boxes saved
-        glob_path_boxes = img_file.split('exa')[0]+'crops/**/*.json'
+        print(img_file)
+        glob_path_boxes = '/'.join(img_file.split('/')[0:-1])+'/crops/**/*.json'
         print(glob_path_boxes)
         path_boxes = glob.glob(glob_path_boxes)
+        print(path_boxes)
 
         # Upload all boxes
         for file in path_boxes:
             #make filename less complicated:
             fn = file.split('detect/')[-1]
             with open(file, 'rb') as f:
-                
+                print(fn)
                 s3.upload_fileobj(f, "exception", fn)
         
         ### TODO DatasetHandler

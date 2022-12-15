@@ -185,7 +185,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
                             
                             
 
-                            save_coordinate_box(xyxy, save_dir / 'crops' / names[c] / names[c]) 
+                            save_coordinate_box(xyxy, save_dir / 'crops' / names[c] / f'{p.stem}.json') 
                             
 
             # Print time (inference-only)

@@ -467,6 +467,7 @@ def save_one_box(xyxy, im, file='image.jpg', gain=1.02, pad=10, square=False, BG
     crop = im[int(xyxy[0, 1]):int(xyxy[0, 3]), int(xyxy[0, 0]):int(xyxy[0, 2]), ::(1 if BGR else -1)]
     if save:
         file.parent.mkdir(parents=True, exist_ok=True)  # make directory
+        print(str(increment_path(file).with_suffix('.jpg')))
         cv2.imwrite(str(increment_path(file).with_suffix('.jpg')), crop)
     return crop
 
@@ -476,6 +477,7 @@ def save_coordinate_box(box, file):
    
     file.parent.mkdir(parents = True, exist_ok = True)
     with open(str(increment_path(file).with_suffix('.json')), "w") as fp:
+                            print(fp)
                             json.dump(box, fp)
 
 def to_json(box):
