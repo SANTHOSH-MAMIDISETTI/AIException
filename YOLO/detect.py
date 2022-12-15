@@ -157,7 +157,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
 
             annotator = Annotator(im0, line_width=line_thickness, example=str(names))
             
-
+            dict_list = []
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
@@ -168,6 +168,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
                 # Write results
+                
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
@@ -176,6 +177,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
 
                     if save_img or save_crop or view_img:  # Add bbox to image
+                        
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
                         annotator.box_label(xyxy, label, color=colors(c, True))
@@ -185,7 +187,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
                             
                             
 
-                            save_coordinate_box(xyxy, save_dir / 'crops' / names[c] / f'{p.stem}.json') 
+                            dict_list.append(save_coordinate_box(xyxy, save_dir / 'crops' / names[c] / f'{p.stem}.json') )
                             
 
             # Print time (inference-only)
@@ -226,7 +228,7 @@ def run(weights=ROOT / 'yolov3.pt',  # model.pt path(s)
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
 
    
-    return pred, im0, save_path
+    return dict_list, im0, save_path
 
 def to_api(files, api_url= "https://jsonplaceholder.typicode.com/todos"):
     api_url = api_url
