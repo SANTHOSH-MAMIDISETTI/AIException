@@ -279,7 +279,7 @@ class Stable_Diff():
     Class responsable for generating and editing images, connecting to the Stable Diffusion api
     Input: API KEY for stable diffusion 
     """
-    def __init__(self, key) -> None:
+    def __init__(self, key= 'sk-okwwhQZ05mESHdEmD5tzi1bxiH97fIL7wWwjcYFrwFDfpLxs') -> None:
         self.key = key # API Key available 'sk-okwwhQZ05mESHdEmD5tzi1bxiH97fIL7wWwjcYFrwFDfpLxs'
         self.host = 'grpc.stability.ai:443'
         self.api = client.StabilityInference(
@@ -294,7 +294,7 @@ class Stable_Diff():
         """
         Input: prompt to generate an image
         """
-        img = img.resize((512, 512))
+        #img = img.resize((512, 512))
         stability_api = self.api # Set up our connection to the API.
 
         answers = stability_api.generate(prompt, sampler=generation.SAMPLER_K_DPMPP_2M )
@@ -305,10 +305,11 @@ class Stable_Diff():
                     "Please modify the prompt and try again.")
                 if artifact.type == generation.ARTIFACT_IMAGE:
                     img = Image.open(io.BytesIO(artifact.binary))
-                    img.save(str(artifact.seed)+ ".png") 
-                    print("Image saved as " + str(artifact.seed) + ".png")
+                    filename = str(artifact.seed)+ ".png"
+                    img.save(filename) 
+                    print("Image saved as " + filename)
 
-                    return img
+                    return img, filename
 
 
     def edit_image(self, img, prompt):
@@ -353,9 +354,12 @@ class Stable_Diff():
                 if artifact.type == generation.ARTIFACT_IMAGE:
                     global img3
                     img3 = Image.open(io.BytesIO(artifact.binary))
-                    img3.save(str(artifact.seed)+ "-5-completed.png") 
+                    filename = str(artifact.seed)+ "-5-completed.png"
+                    img3.save(filename) 
+                    print("Image saved as " + filename)
 
-                    return img3
+                    return img3, filename
+
 
 
 
