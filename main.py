@@ -53,7 +53,7 @@ def main():
 
     input_pic = None
     #input_pic = Image.open('example.png')
-    prompt = 'A uni cafeteria with metal tables and chairs'
+    prompt = 'An abstract study room with floating furniture and a water-like color scheme.'
 
     if input_pic:
         
@@ -79,6 +79,7 @@ def main():
     else:
         upload_file(filename, object_name= unique_id+'/generated.jpg')
         pred, image, img_file = yolo.run(source = filename)
+        
 
         # Get the files that have the boxes saved
         print(img_file)
