@@ -22,7 +22,7 @@ seaborn
 setuptools
 sounddevice
 stability_sdk
-tflite-runtime==2.11.0
+tflite
 thop
 torch
 torchvision
