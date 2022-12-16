@@ -53,7 +53,7 @@ class Stable_Diff():
     Class responsable for generating and editing images, connecting to the Stable Diffusion api
     Input: API KEY for stable diffusion 
     """
-    def __init__(self, key= 'sk-w3uG3THRYH92M23HYfrR848QRfPJdpYru8RT8fzsfU38d7dw') -> None:
+    def __init__(self, key= 'sk-4Ki24NIEzx1cRa2TSYQn9NLLEi8WNE3CpVAAVGaA3RxcXmj5') -> None:
         self.key = key 
         self.host = 'grpc.stability.ai:443'
         self.api = client.StabilityInference(
