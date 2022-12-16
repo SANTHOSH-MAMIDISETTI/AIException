@@ -1,8 +1,8 @@
 ---
-title: Ultimatedesign
+title: Ultimate Design
 emoji: 💻
-colorFrom: indigo
-colorTo: gray
+colorFrom: green
+colorTo: pink
 sdk: streamlit
 sdk_version: 1.15.2
 app_file: app.py
