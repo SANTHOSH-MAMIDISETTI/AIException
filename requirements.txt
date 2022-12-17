@@ -6,7 +6,7 @@ gTTS
 ipython
 keras
 matplotlib
-numpy
+numpy==1.22.0
 onnxruntime
 openai
 opencv_python
