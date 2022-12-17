@@ -4,11 +4,11 @@ emoji: 💻
 colorFrom: green
 colorTo: pink
 sdk: streamlit
+python_version: 3.8.10
 sdk_version: 1.15.2
 app_file: app.py
 pinned: false
 license: gpl-3.0
-python_version: 3.9.15
 ---
 
 # AIException
